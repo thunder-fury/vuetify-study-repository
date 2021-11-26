@@ -1,28 +1,11 @@
 <template>
   <v-row justify="center" align="center">
-    <!-- <v-col cols="12" sm="8" md="6">
-      <v-card>
-        <div v-for="i in items" :key="i.id">
-          {{ item.message }}
-          <v-autocomplete
-            auto-select-first
-            chips
-            clearable
-            deletable-chips
-            dense
-            filled
-            multiple
-            small-chips
-            :items="i.item"
-          />
-        </div>
-      </v-card>
-    </v-col> -->
     <v-card class="mt-10 p-20">
       <v-btn
         class="ma-2"
         depressed
         color="primary"
+        :disabled="disabled"
         @click="add"
       >
         <span>addCount</span>
@@ -30,6 +13,7 @@
       <v-btn
         class="ma-2"
         depressed
+        :disabled="disabled"
         color="primary"
         @click="remove"
       >
@@ -65,7 +49,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['count']),
+    ...mapState(['count', 'disabled']),
     ...mapState(['loading']),
     // exportしたmapGettersのkeyを引き受け`$store.state`の省略ができる
     ...mapGetters(['user']),
@@ -74,16 +58,17 @@ export default {
       userData: 'user'
     })
   },
+  mounted () {
+
+  },
   methods: {
-    ...mapActions(['addAsync']),
+    ...mapActions(['addAsync', 'removeAsync']),
     ...mapMutations(['increment', 'decrement', 'setLoading']),
     add () {
-      // this.setLoading({ payload: true })
       this.addAsync()
-      // this.setLoading({ payload: false })
     },
     remove () {
-      this.decrement()
+      this.removeAsync()
     }
   }
 }
