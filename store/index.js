@@ -2,8 +2,8 @@ const state = () => ({
   user: {
     name: 'thunder_fury'
   },
-  loading: false,
   count: 0,
+  loading: false,
   disabled: false
 })
 
@@ -26,6 +26,9 @@ const mutations = {
   },
   setDisabled (state, payload) {
     state.disabled = payload
+  },
+  resetCount (state, payload) {
+    state.count = payload
   }
 }
 
@@ -50,6 +53,9 @@ const actions = {
         commit('decrement')
         commit('setLoading', false)
         commit('setDisabled', false)
+        if (state.count <= 0) {
+          commit('resetCount', 0)
+        }
         resolve()
       }, 2000)
     })
