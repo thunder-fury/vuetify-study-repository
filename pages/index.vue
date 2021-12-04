@@ -32,6 +32,11 @@
         </p>
       </div>
     </v-card>
+    <v-card>
+      <nuxt-link to="/blog">
+        <v-btn>BLOG</v-btn>
+      </nuxt-link>
+    </v-card>
   </v-row>
 </template>
 
@@ -49,7 +54,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['count', 'disabled']),
+    ...mapState(['count', 'disabled', 'testData']),
     ...mapState(['loading']),
     // exportしたmapGettersのkeyを引き受け`$store.state`の省略ができる
     ...mapGetters(['user']),
@@ -59,10 +64,10 @@ export default {
     })
   },
   mounted () {
-
+    // this.$router.push('/about')
   },
   methods: {
-    ...mapActions(['addAsync', 'removeAsync']),
+    ...mapActions({ addAsync: 'addAsync', removeAsync: 'removeAsync' }),
     ...mapMutations(['increment', 'decrement', 'setLoading']),
     add () {
       this.addAsync()
@@ -70,6 +75,7 @@ export default {
     remove () {
       this.removeAsync()
     }
+
   }
 }
 </script>

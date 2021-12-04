@@ -1,10 +1,16 @@
+/* eslint-disable no-unused-vars */
 const state = () => ({
   user: {
     name: 'thunder_fury'
   },
   count: 0,
   loading: false,
-  disabled: false
+  disabled: false,
+  testData: '',
+  id: '',
+  token: '',
+  posts: []
+
 })
 
 // ステートエクスポート
@@ -21,6 +27,12 @@ const mutations = {
   decrement (state) {
     state.count--
   },
+  getPosts (state, payload) {
+    state.posts = payload
+  },
+  setData (state, payload) {
+    state.testData = payload
+  },
   setLoading (state, payload) {
     state.loading = payload
   },
@@ -33,6 +45,34 @@ const mutations = {
 }
 
 const actions = {
+  async getData ({ commit, state }) {
+    commit('setLoading', true)
+    const posts = await fetch('https://jsonplaceholder.typicode.com/posts').then(res => res.json())
+    commit('getPosts', posts)
+    commit('setLoading', false)
+    return posts
+  },
+  pageLoding ({ commit, state }, payload) {
+    commit('setLoading', true)
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        commit('setLoading', false)
+        resolve()
+      }, 2000)
+    })
+  },
+  addData ({ commit, state }, payload) {
+    commit('setLoading', true)
+    commit('setDisabled', true)
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        commit('increment')
+        commit('setLoading', false)
+        commit('setDisabled', false)
+        resolve()
+      }, 2000)
+    })
+  },
   addAsync ({ commit, state }, payload) {
     commit('setLoading', true)
     commit('setDisabled', true)
