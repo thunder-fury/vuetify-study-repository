@@ -35,6 +35,7 @@ export default {
   mounted () {
     // this.firstLoding()
     this.getData()
+    // eslint-disable-next-line no-console
     console.log(this.posts)
   },
   // eslint-disable-next-line vue/order-in-components
@@ -53,7 +54,7 @@ export default {
       fetch(endPoint).then((res) => {
         this.setData(res)
       }).catch((err) => {
-        console.log(err)
+        alert(err)
       })
     }
   }
