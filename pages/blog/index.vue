@@ -12,20 +12,27 @@
         <div v-else>
           <ul class="ma-5">
             <li
-              v-for="(item, index) in pageNationConf.currentPosts"
+              v-for="(item, index) in pageNation.currentPosts"
               :key="index"
             >
-              {{ item.title }}
+              {{ item.id }}{{ item.title }}
             </li>
           </ul>
         </div>
       </v-row>
       <div>
         <ul class="d-flex flex-row">
-          <li v-for="num in pageNation" :key="num">
-            {{ num }}
+          <li v-for="num in pageNationNumber" :key="num">
+            <a
+              @click="push(num)"
+            >{{ num }}</a>
           </li>
         </ul>
+        <!-- <v-pagination
+          v-model="currentPage"
+          :length="15"
+          :total-visible="pageNationConfig.totalPage"
+        /> -->
       </div>
     </div>
   </v-row>
@@ -37,42 +44,63 @@ import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      pageNation: [],
-      pageNationConf: {}
+      pageNationNumber: [],
+      pageNation: {}
+
     }
   },
+
   computed: {
-    ...mapGetters({ loading: 'module/common/loading' }),
+    ...mapGetters({
+      loading: 'module/common/loading',
+      currentPage: 'module/common/currentPage'
+    }),
     ...mapGetters({
       apiData: 'module/api/apiData'
       // pageNationConf: 'module/common/pabeNationConfig'
-    })
+    }),
+    pageNum () {
+      const num = this.$route.query.page ? this.$route.query.page : 1
+      return num
+    }
+
+  },
+  watch: {
   },
   mounted () {
     this.isLoading()
     this.getData({ url: 'https://jsonplaceholder.typicode.com/posts' })
-    this.pageNationConf = this.pageNationConfig({
+    this.pageNation = this.pageNationConfig({
       datas: this.apiData,
-      currentPage: 1,
+      currentPage: Number(this.pageNum),
       perPage: 10,
-      upperPage: 2
+      upperPage: 4
     })
     this.setPageNumbers({
-      startPage: this.pageNationConf.startPage,
-      endPage: this.pageNationConf.endPage
-    }, this.pageNation)
+      startPage: this.pageNation.startPage,
+      endPage: this.pageNation.endPage
+    }, this.pageNationNumber)
   },
 
   methods: {
     ...mapActions({
       isLoading: 'module/common/pageLoding',
-      // pageNationConfig: 'module/common/pageNationConfig',
+      paginate: 'module/common/paginate',
       getData: 'module/api/getData'
     }),
     setPageNumbers: ({ startPage, endPage }, arr) => {
       for (let i = startPage; i <= endPage; i++) {
         arr.push(i)
       }
+    },
+    push: (num) => {
+      console.log(num)
+      // this.$router.push({
+      //   path: '/blog',
+      //   query: {
+      //     page: num
+      //   }
+      // })
     },
     pageNationConfig: (info) => {
       const { datas, currentPage, perPage, upperPage } = info
@@ -97,3 +125,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .pageNum {
+    list-style: none;
+  }
+</style>
