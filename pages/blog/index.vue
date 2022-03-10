@@ -10,24 +10,54 @@
           width="5"
         />
         <div v-else>
-          <ul class="ma-5">
+          <!-- <ul class="ma-5">
             <li
-              v-for="(item, index) in pageNation.currentPosts"
+              v-for="(item, index) in apiData"
               :key="index"
             >
               {{ item.id }}{{ item.title }}
             </li>
-          </ul>
+          </ul> -->
+          <div
+            v-for="(item, index) in apiData"
+            :key="index"
+            class="d-flex pa-2"
+          >
+            <v-card
+              max-width="200"
+            >
+              <v-img
+                class="white--text align-end"
+                height="200px"
+                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+              >
+                <v-card-title>{{ item.title }}</v-card-title>
+              </v-img>
+              <!-- <v-card-text class="text--primary">
+              <div>Whitehaven Beach</div>
+
+              <div>Whitsunday Island, Whitsunday Islands</div>
+            </v-card-text> -->
+              <v-card-actions>
+                <v-btn
+                  color="orange"
+                  text
+                >
+                  more
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </div>
         </div>
       </v-row>
       <div>
-        <ul class="d-flex flex-row">
+        <!-- <ul class="d-flex flex-row">
           <li v-for="num in pageNationNumber" :key="num">
             <a
               @click="push(num)"
             >{{ num }}</a>
           </li>
-        </ul>
+        </ul> -->
         <!-- <v-pagination
           v-model="currentPage"
           :length="15"
@@ -69,7 +99,7 @@ export default {
   },
   mounted () {
     this.isLoading()
-    this.getData({ url: 'https://jsonplaceholder.typicode.com/posts' })
+    this.getData({ url: 'https://notion-api.splitbee.io/v1/table/4a8363a71a1b4800b793f54fc692b938?v=eb8783b5792b48559283defeff31a9c9' })
     this.pageNation = this.pageNationConfig({
       datas: this.apiData,
       currentPage: Number(this.pageNum),
